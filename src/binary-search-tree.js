@@ -28,7 +28,7 @@ class BinarySearchTree {
       data < node.data
         ? node.left = addWithin(node.left, data)
         : node.right = addWithin(node.right, data)
-        
+
       return node
     }
 
@@ -36,12 +36,11 @@ class BinarySearchTree {
 
   // returns true if node with the data exists in the tree and false otherwise 
   has(data) {
-    return searchWithin(this.root, data)
+    return searchWithin(this.rootTree, data)
 
     function searchWithin(node, data) {
       if (!node) return false
       if (node.data === data) return true
-      // if (data === null) return 'root'
 
       return data < node.data
         ? searchWithin(node.left, data)
@@ -51,74 +50,80 @@ class BinarySearchTree {
 
   // returns node with the data if node with the data exists in the tree and null otherwise
   find(data) {
+    return search(this.rootTree, data)
 
+    function search(node, data) {
+      if (!node) return null
+      if (node.data === data) return node
+
+      return data < node.data
+        ? search(node.left, data)
+        : search(node.right, data)
+    }
   }
 
   // removes node with the data from the tree if node with the data exists
   remove(data) {
-    this.root = removeNode(this.root, data)
+    this.rootTree = removeNode(this.rootTree, data)
 
     function removeNode(node, data) {
-      if (!node || !node.left && !node.left) return null
-      if (data < node.data) node.left = addWithin(node.left, data)
-      if (data > node.data) node.right = addWithin(node.right, data)
-      if (!node.left) node = node.right
-      if (!node.right) node = node.left
+      if (!node) return null
 
-      let minFromRight = node.right
 
-      while (minFromRight.left) {
-        minFromRight = minFromRight.left
+      if (data < node.data) {
+        node.left = removeNode(node.left, data)
+        return node
+      } else if (data > node.data) {
+        node.right = removeNode(node.right, data)
+        return node
+      } else {
+
+        if (!node.left && !node.right) return null
+
+        if (!node.left) {
+          node = node.right
+          return node
+        }
+        if (!node.right) {
+          node = node.left
+          return node
+        }
+
+        let minFromRight = node.right
+
+        while (minFromRight.left) minFromRight = minFromRight.left
+
+        node.data = minFromRight.data
+        node.right = removeNode(node.right, minFromRight.data)
+
+        return node
+
       }
 
-      node.data = minFromRight.data
-      node.right = removeNode(node.right, minFromRight.data)
-
-      return node
     }
   }
 
   // returns minimal value stored in the tree (or null if tree has no nodes)
   min() {
-    if (!this.root) return
+    if (!this.rootTree) return
 
-    let node = this.root
-
-    while (node.left) {
-      node = node.left
-    }
+    let node = this.rootTree
+    while (node.left) node = node.left
 
     return node.data
   }
 
   // returns maximal value stored in the tree (or null if tree has no nodes)
   max() {
-    if (!this.root) return
+    if (!this.rootTree) return
 
-    let node = this.root
-
-    while (node.right) {
-      node = node.right
-    }
+    let node = this.rootTree
+    while (node.right) node = node.right
 
     return node.data
   }
 }
 
-
-const tree = new BinarySearchTree();
-// tree.add(2);
-// tree.add(3);
-tree.add(4);
-console.log(tree.root());
-console.log(tree.root.data);
-// console.log(tree.add(7));
-// console.log(tree.add(1));
-// console.log(tree.add(8));
-// console.log(tree.add(4));
-// console.log(tree.add(32));
-// console.log(tree.add(12));
-// console.log(tree.add(14));
 
 
 module.exports = {
