@@ -8,18 +8,18 @@ const { NotImplementedError } = require('../extensions/index.js');
 */
 class BinarySearchTree {
   constructor() {
-    this.root = null;
+    this.rootTree = null;
   }
 
   // return root node of the tree
   root() {
-    return this.root = { data: null, left: null, right: null }
+    return this.rootTree
   }
 
   // add node with data to the tree
   add(data) {
     const _node = { data: data, left: null, right: null }
-    this.root = addWithin(this.root, data)
+    this.rootTree = addWithin(this.rootTree, data)
 
     function addWithin(node, data) {
       if (!node) return _node
@@ -107,14 +107,18 @@ class BinarySearchTree {
 
 
 const tree = new BinarySearchTree();
-tree.add(2);
-tree.add(7);
-tree.add(1);
-tree.add(8);
+// tree.add(2);
+// tree.add(3);
 tree.add(4);
-tree.add(32);
-tree.add(12);
-tree.add(14);
+console.log(tree.root());
+console.log(tree.root.data);
+// console.log(tree.add(7));
+// console.log(tree.add(1));
+// console.log(tree.add(8));
+// console.log(tree.add(4));
+// console.log(tree.add(32));
+// console.log(tree.add(12));
+// console.log(tree.add(14));
 
 
 module.exports = {
